@@ -146,7 +146,7 @@ class QuizController extends Controller
 
     public function get_lessions_by_subjects(Request $request)
     {
-       
+
 
         // Get subjects for the specified class_id
         $subjects = DB::table('mstr_lessons')->where('subject_id', $request->subject_id)->get();
@@ -164,10 +164,10 @@ class QuizController extends Controller
         $draw = $request->input('draw');
         $start = $request->input('start');
         $length = $request->input('length');
-        
+
         // You can add filtering and sorting logic here as needed
         $query =  DB::table('quizzes');
-        
+
         // Optionally, apply any filters or search query if required
         if ($search = $request->input('search.value')) {
             $query->where('title', 'like', '%' . $search . '%')
@@ -179,7 +179,6 @@ class QuizController extends Controller
 
         // Total records count (without filters)
         $totalRecords = $query->count();
-        
         // Apply pagination (limit and offset)
         $data = $query->offset($start)
                       ->limit($length)
