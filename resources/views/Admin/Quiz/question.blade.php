@@ -120,6 +120,18 @@
                 <div class="card-body pt-5">
                   <div class="tab-content p-0">
                     <div class="tab-pane fade show active" id="navs-justified-viewQue" role="tabpanel">
+                        <div class="row">
+                            <div class="col"><div class="form-floating form-floating-outline">
+                                <select class="form-select" id="mySelect2" aria-label="Floating label select example">
+                                  <option>Open this select menu</option>
+                                  <option value="1">One</option>
+                                  <option value="2">Two</option>
+                                  <option value="3">Three</option>
+                                </select>
+                                <label for="floatingSelect">Works with selects</label>
+                              </div>
+                             </div>
+                        </div>
                         <div class="table-responsive text-nowrap">
                             <table class="table table-sm">
                               <thead>
@@ -314,134 +326,30 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-    const fullToolbar = [
-    [
-      {
-        font: []
-      },
-      {
-        size: []
-      }
-    ],
-    ['bold', 'italic', 'underline', 'strike'],
-    [
-      {
-        color: []
-      },
-      {
-        background: []
-      }
-    ],
-    [
-      {
-        script: 'super'
-      },
-      {
-        script: 'sub'
-      }
-    ],
-    [
-      {
-        header: '1'
-      },
-      {
-        header: '2'
-      },
-      'blockquote',
-      'code-block'
-    ],
-    [
-      {
-        list: 'ordered'
-      },
-      {
-        list: 'bullet'
-      },
-      {
-        indent: '-1'
-      },
-      {
-        indent: '+1'
-      }
-    ],
-    [{ direction: 'rtl' }],
-    ['link', 'image', 'video', 'formula'],
-    ['clean']
-  ];
-  const fullEditor = new Quill('#full-editor', {
-    bounds: '#full-editor',
-    placeholder: 'Type Something...',
-    modules: {
-      formula: true,
-      toolbar: fullToolbar
-    },
-    theme: 'snow'
-  });
-$(document).ready(function() {
-    // Submit the form using AJAX
-    $('form').on('submit', function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Get the form data
-        var formData = new FormData(this);
-
-    // Get the content from the Quill editor
-    var quillContent = fullEditor.root.innerHTML;  // quill is the Quill editor instance
-
-// Append the Quill content to the FormData
-    formData.append('description', quillContent);
-        // Send the data using AJAX
-        $.ajax({
-            url: '{{ route('quiz.store') }}',  // Your Laravel route for storing quizzes
-            method: 'POST',
-            data: formData,
-            processData: false,  // Don't process the data
-            contentType: false,  // Don't set content type
-            success: function(response) {
-                if (response.success) {
-                    alert('Quiz created successfully!');
-                    window.location.href = response.redirect_url; // Redirect to the quizzes list page or any other URL
-                } else {
-                  var errors = response.errors;
-                  console.log(errors);
-                  for (var field in errors) {
-            if (errors.hasOwnProperty(field)) {
-              // Example: display validation errors on the UI
-              var errorMessages = errors[field];
-               $('input[name="' + field + '"]').addClass('is-invalid');
-               $('select[name="' + field + '"]').addClass('is-invalid');
-              $('div[data-field="' + field + '"]').html(errorMessages.join('')).addClass('text-danger');
-            }
-          }
-                }
+  $('#mySelect2').select2({
+        placeholder: 'Select a user',
+        multiple: true,
+        ajax: {
+            url: '{{ route("question.search") }}', // Your route that returns user data
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    q: params.term // search term
+                };
             },
-            error: function(xhr, status, error) {
-                console.log(xhr.responseText);
-                alert('There was an error with the AJAX request.');
-            }
-        });
+            processResults: function (data) {
+                return {
+                    results: data.map(user => ({
+                        id: user.id,
+                        text: user.name
+                    }))
+                };
+            },
+            cache: true
+        }
     });
 
-    $('input, select').on('input change', function() {
-    var fieldName = $(this).attr('name'); // Get the name of the field
-
-    // Remove the 'is-invalid' class from inputs/selects
-    $(this).removeClass('is-invalid');
-
-    // Remove the error message from the UI
-    $('div[data-field="' + fieldName + '"]').html('').removeClass('text-danger');
-});
-
-fullEditor.on('text-change', function() {
-    // Remove error styling from the Quill editor container
-    $('#quill-editor-container').removeClass('is-invalid');
-
-    // Clear error messages
-    $('div[data-field="' + 'description' + '"]').html('').removeClass('text-danger');
-});
-});
-
-// Listen for changes in the Quill editor
 
 </script>
 

@@ -30,6 +30,7 @@ Route::middleware(['role:admin'])->group(function () {
     // Question routes
     Route::get('/question', [App\Http\Controllers\Admin\QuestionController::class, 'index'])->name('question');
     Route::get('/question/create', [App\Http\Controllers\Admin\QuestionController::class, 'create'])->name('question.create');
+    Route::get('/question/search', [App\Http\Controllers\Admin\QuestionController::class, 'search'])->name('question.search');
     // Route::get('/question/{question_id}/edit', [App\Http\Controllers\Admin\QuestionController::class, 'question_edit'])->name('question.edit');
     // Route::get('/question/{question_id}/settings', [App\Http\Controllers\Admin\QuestionController::class, 'question_settings'])->name('question.settings');
     // Route::get('/question/{question_id}/questions', [App\Http\Controllers\Admin\QuestionController::class, 'question_questions'])->name('question.questions');
