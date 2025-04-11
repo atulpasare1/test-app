@@ -119,6 +119,23 @@ class QuizController extends Controller
             'quiz'=>$quiz
         ]);
     }
+    public function quiz_settings_submit(Request $request,$quiz_id)
+    {
+        $data = $request->except('_token');
+
+        // Convert to JSON
+        $jsonData = json_encode($data);
+        DB::table('quizzes')->where('id',$quiz_id)->update([
+            'settings' => $jsonData,
+            'updated_at' => now(),
+        ]);
+        // Respond with success message
+        return response()->json([
+            'success' => true,
+            'message' => 'Quiz Settings updated successfully!',
+           'redirect_url' => route('quiz.questions',['quiz_id'=>$quiz_id]),  // Redirect to quizzes list page or wherever you want
+        ]);
+    }
     // quiz_questions
     public function quiz_questions(Request $request,$quiz_id)
     {
@@ -196,7 +213,7 @@ class QuizController extends Controller
                     'subject' => $item->subject_id,
                     'lesson' => $item->lesson_id,
                     'status' => $item->is_active ? 'Active' : 'Inactive',
-                    'actions' => "<button>Edit</button> <button>Delete</button>",
+                    'actions' => "<a href='".route('quiz.edit',['quiz_id'=>$item->id])."'><i class='ri-edit-box-line me-2'></i></button> <button>Delete</button>",
                 ];
             }),
         ];

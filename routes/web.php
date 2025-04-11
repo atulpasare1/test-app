@@ -23,6 +23,7 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/quiz/create', [App\Http\Controllers\Admin\QuizController::class, 'create'])->name('quiz.create');
     Route::get('/quiz/{quiz_id}/edit', [App\Http\Controllers\Admin\QuizController::class, 'quiz_edit'])->name('quiz.edit');
     Route::get('/quiz/{quiz_id}/settings', [App\Http\Controllers\Admin\QuizController::class, 'quiz_settings'])->name('quiz.settings');
+    Route::post('/quiz/{quiz_id}/settings/submit', [App\Http\Controllers\Admin\QuizController::class, 'quiz_settings_submit'])->name('quiz.settings.submit');
     Route::get('/quiz/{quiz_id}/questions', [App\Http\Controllers\Admin\QuizController::class, 'quiz_questions'])->name('quiz.questions');
     Route::get('/quiz/{quiz_id}/schedules', [App\Http\Controllers\Admin\QuizController::class, 'quiz_schedules'])->name('quiz.schedules');
     Route::post('/quiz/submit', [App\Http\Controllers\Admin\QuizController::class, 'store'])->name('quiz.store');
@@ -46,7 +47,7 @@ Route::middleware(['role:admin'])->group(function () {
 
 // Teacher Routes
 Route::middleware(['role:teacher'])->group(function () {
-   
+
     Route::get('/home', [App\Http\Controllers\Teacher\DashboardController::class, 'index']);
 });
 

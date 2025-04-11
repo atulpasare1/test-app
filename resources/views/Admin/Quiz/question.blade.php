@@ -12,11 +12,11 @@
                     <h5 class="card-title mb-0">{{$title}}</h5>
                     <small class="text-muted"> You can manage Quiz From here</small>
                 </div>
-               
+
               </div>
-          
-           
-          
+
+
+
         </div>
       </div>
       <div class="col-sm-2 d-grid">
@@ -29,10 +29,10 @@
                 </div>
                 <div class="d-flex flex-column text-dark">
                     <span>Details</span>
-                    
+
                 </div>
              </div>
-         
+
         </a>
          </div>
       <div class="col-sm-2 d-grid">
@@ -46,10 +46,10 @@
                 </div>
                 <div class="d-flex flex-column">
                     <span>Settings</span>
-                    
+
                 </div>
              </div>
-         
+
         </a>
       </div>
       <div class="col-sm-2 d-grid">
@@ -63,10 +63,10 @@
                 </div>
                 <div class="d-flex flex-column">
                     <span>Questions</span>
-                    
+
                 </div>
              </div>
-         
+
         </a>
       </div>
       <div class="col-sm-2 d-grid">
@@ -79,13 +79,13 @@
                 </div>
                 <div class="d-flex flex-column">
                     <span>Schedules</span>
-                    
+
                 </div>
              </div>
-         
+
         </a>
       </div>
-    
+
     </div>
     <!-- {{$title}}  List Table -->
     <div class="card card-action mb-8">
@@ -95,184 +95,218 @@
       </div>
 
       <div class="collapse show">
-      <div class="card-body m-5">
-         <form class="m-5">
-            @csrf
-            <div class="form-floating form-floating-outline mb-8">
-              <input type="text" name="title" class="form-control" id="basic-default-fullname" placeholder="John Doe">
-              <label for="basic-default-fullname">Title<span class="text-danger">*</span></label>
-              <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-               <div data-field="title" data-validator="notEmpty">
-                </div>
-               </div>
-            </div>
-           
-            <div class="mb-8">
-               <div class="row">
-                  <div class="col-sm-4">
-                     <div class="form-floating form-floating-outline">
-                        <select class="form-select select2" name="board" id="floatingSelectBorad" aria-label="Floating label select example">
-                          <option value="?">Select Board</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </select>
-                        <label for="floatingSelect">Boards</label>
-                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                           <div data-field="board" data-validator="notEmpty">
-                              </div>
-                           </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-4">
-                     <div class="form-floating form-floating-outline">
-                        <select class="form-select select2" name="class" id="floatingSelectClass" aria-label="Floating label select example">
-                          <option value="?">Select Class</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </select>
-                        <label for="floatingSelect">Classes</label>
-                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                           <div data-field="class" data-validator="notEmpty">
-                              </div>
-                           </div>
-                      </div>
-                  </div>
-                  <div class="col-sm-4">
-                     <div class="form-floating form-floating-outline">
-                        <select class="form-select select2" name="subject" id="floatingSelectSubject" aria-label="Floating label select example">
-                          <option value="?">Select Subject</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </select>
-                        <label for="floatingSelect">Subjects</label>
-                        <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                           <div data-field="subject" data-validator="notEmpty">
-                              </div>
-                           </div>
-                      </div>
-                  </div>
-               </div>
-            </div>
-            <div class="mb-8">
-              <div class="row">
-               <div class="col-sm-6">
-                  <div class="form-floating form-floating-outline">
-                     <select class="form-select select2" name="lession" id="floatingSelectLession" aria-label="Floating label select example">
-                       <option value="?">Select Lession</option>
-                       <option value="1">One</option>
-                       <option value="2">Two</option>
-                       <option value="3">Three</option>
-                     </select>
-                     <label for="floatingSelect">Lessions</label>
-                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                        <div data-field="lession" data-validator="notEmpty">
-                           </div>
-                        </div>
-                   </div>
-               </div>
-               <div class="col-sm-6">
-                  <div class="form-floating form-floating-outline">
-                     <select class="form-select select2" name="topic" id="floatingSelectTopics" aria-label="Floating label select example">
-                       <option value="?">Select Topic</option>
-                       <option value="1">One</option>
-                       <option value="2">Two</option>
-                       <option value="3">Three</option>
-                     </select>
-                     <label for="floatingSelect">Topics</label>
-                     <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
-                        <div data-field="topic" data-validator="notEmpty">
-                           </div>
-                        </div>
-                   </div>
-               </div>
-                
-              </div>
-               </div>
-            <div class="mb-3">
-               <div class="row">
-                  <div class="col-sm-3 mb-md-0 mb-5">
-                    <div class="form-check custom-option custom-option-basic">
-                      <label class="form-check-label custom-option-content" for="customRadioTemp1">
-                        <input name="is_paid" class="form-check-input" type="radio" value="0" id="customRadioTemp1" checked="">
-                        <span class="custom-option-header">
-                          <span class="h6 mb-0">Free</span>
-                          <small class="text-muted">Free</small>
-                        </span>
-                        <span class="custom-option-body">
-                          <small>Anyone can access</small>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-sm-3">
-                    <div class="form-check custom-option custom-option-basic checked">
-                      <label class="form-check-label custom-option-content" for="customRadioTemp2">
-                        <input name="is_paid" class="form-check-input" type="radio" value="1" id="customRadioTemp2">
-                        <span class="custom-option-header">
-                          <span class="h6 mb-0">Paid</span>
-                          <small class="text-muted">$ </small>
-                        </span>
-                        <span class="custom-option-body">
-                          <small>Accessible to only paid users</small>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-sm-3 mb-md-0 mb-5">
-                    <div class="form-check custom-option custom-option-basic">
-                      <label class="form-check-label custom-option-content" for="customRadioTemp3">
-                        <input name="is_private" class="form-check-input" type="radio" value="0" id="customRadioTemp5" checked="">
-                        <span class="custom-option-header">
-                          <span class="h6 mb-0">public</span>
-                          <small class="text-muted">public</small>
-                        </span>
-                        <span class="custom-option-body">
-                          <small>Anyone can access</small>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                  <div class="col-sm-3">
-                    <div class="form-check custom-option custom-option-basic checked">
-                      <label class="form-check-label custom-option-content" for="customRadioTemp6">
-                        <input name="is_private" class="form-check-input" type="radio" value="1" id="customRadioTemp2">
-                        <span class="custom-option-header">
-                          <span class="h6 mb-0">Private</span>
-                          <small class="text-muted">$ </small>
-                        </span>
-                        <span class="custom-option-body">
-                          <small>Only groups users  can access</small>
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-               </div>
-            
+      <div class="card-body ">
+        <div class="row g-6">
 
-            <div class="mb-8 ">
-               <label for="basic-default-fullname mx-1">{{ucfirst($title)}} Description<span class="text-danger">*</span></label>
-               <div id="full-editor" ></div>
-               <div class="fv-plugins-message-container fv-plugins-message-container--enabled ">
-                  <div data-field="description" data-validator="notEmpty">
-                     </div>
+          <div class="col-xl-12 col-md-12 col-sm-12">
+            <div class=" mb-6">
+                <div class="card-header p-0">
+                  <div class="nav-align-top" style="width: 100%;">
+                    <ul class="nav nav-tabs nav-fill" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link active waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-viewQue" aria-controls="navs-justified-home" aria-selected="true"><span class="d-none d-sm-block">
+                            <i class="tf-icons ri-home-smile-line me-2"></i> View Questions
+                            </span><i class="ri-home-smile-line ri-20px d-sm-none"></i></button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button type="button" class="nav-link waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-Addque"
+                        aria-controls="navs-justified-profile" aria-selected="false" tabindex="-1"><span class="d-none d-sm-block">
+                            <i class="tf-icons ri-user-3-line me-2"></i> Add Questions</span><i class="ri-user-3-line ri-20px d-sm-none"></i></button>
+                      </li>
+
+                    <span class="tab-slider" style="left: 0px; width: 237.688px; bottom: 0px;"></span></ul>
                   </div>
-            </div>
-            <div class="mb-8 float-end">
-               <a href="{{route('quiz')}}" class="btn btn-outline-primary waves-effect">Cancel</a>
-               <button type="submit" class="btn btn-primary waves-effect waves-light">Submit Quiz </button>
-            </div>
-           
-            
-          </form>
-      </div>
+                </div>
+                <div class="card-body pt-5">
+                  <div class="tab-content p-0">
+                    <div class="tab-pane fade show active" id="navs-justified-viewQue" role="tabpanel">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table table-sm">
+                              <thead>
+                                <tr>
+                                  <th>Project</th>
+                                  <th>Client</th>
+                                  <th>Users</th>
+                                  <th>Status</th>
+                                  <th>Actions</th>
+                                </tr>
+                              </thead>
+                              <tbody class="table-border-bottom-0">
+                                <tr>
+                                  <td><i class="ri-suitcase-2-line ri-22px text-danger me-4"></i><span class="fw-medium">Tours Project</span></td>
+                                  <td>Albert Cook</td>
+                                  <td>
+                                    <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Lilian Fuller" data-bs-original-title="Lilian Fuller">
+                                        <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson" data-bs-original-title="Sophia Wilkerson">
+                                        <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Christina Parker" data-bs-original-title="Christina Parker">
+                                        <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                    </ul>
+                                  </td>
+                                  <td><span class="badge rounded-pill bg-label-primary me-1">Active</span></td>
+                                  <td>
+                                    <div class="dropdown">
+                                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow show" data-bs-toggle="dropdown" aria-expanded="true"><i class="ri-more-2-line"></i></button>
+                                      <div class="dropdown-menu show" data-popper-placement="top-start" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(1206px, -167px);">
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-pencil-line me-1"></i> Edit</a>
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-delete-bin-7-line me-1"></i> Delete</a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td><i class="ri-basketball-fill ri-22px text-info me-4"></i><span class="fw-medium">Sports Project</span></td>
+                                  <td>Barry Hunter</td>
+                                  <td>
+                                    <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Lilian Fuller" data-bs-original-title="Lilian Fuller">
+                                        <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson" data-bs-original-title="Sophia Wilkerson">
+                                        <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Christina Parker" data-bs-original-title="Christina Parker">
+                                        <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                    </ul>
+                                  </td>
+                                  <td><span class="badge rounded-pill bg-label-success me-1">Completed</span></td>
+                                  <td>
+                                    <div class="dropdown">
+                                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line"></i></button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-pencil-line me-1"></i> Edit</a>
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-delete-bin-7-line me-1"></i> Delete</a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td><i class="ri-leaf-fill ri-22px text-success me-4"></i><span class="fw-medium">Greenhouse Project</span></td>
+                                  <td>Trevor Baker</td>
+                                  <td>
+                                    <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Lilian Fuller" data-bs-original-title="Lilian Fuller">
+                                        <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson" data-bs-original-title="Sophia Wilkerson">
+                                        <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Christina Parker" data-bs-original-title="Christina Parker">
+                                        <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                    </ul>
+                                  </td>
+                                  <td><span class="badge rounded-pill bg-label-info me-1">Scheduled</span></td>
+                                  <td>
+                                    <div class="dropdown">
+                                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line"></i></button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-pencil-line me-1"></i> Edit</a>
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-delete-bin-7-line me-1"></i> Delete</a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td><i class="ri-bank-fill ri-22px text-primary me-4"></i><span class="fw-medium">Bank Project</span></td>
+                                  <td>Jerry Milton</td>
+                                  <td>
+                                    <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Lilian Fuller" data-bs-original-title="Lilian Fuller">
+                                        <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Sophia Wilkerson" data-bs-original-title="Sophia Wilkerson">
+                                        <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                      <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" aria-label="Christina Parker" data-bs-original-title="Christina Parker">
+                                        <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle">
+                                      </li>
+                                    </ul>
+                                  </td>
+                                  <td><span class="badge rounded-pill bg-label-warning me-1">Pending</span></td>
+                                  <td>
+                                    <div class="dropdown">
+                                      <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i class="ri-more-2-line"></i></button>
+                                      <div class="dropdown-menu">
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-pencil-line me-1"></i> Edit</a>
+                                        <a class="dropdown-item waves-effect" href="javascript:void(0);"><i class="ri-delete-bin-7-line me-1"></i> Delete</a>
+                                      </div>
+                                    </div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                    </div>
+                    <div class="tab-pane fade" id="navs-justified-Addque" role="tabpanel">
+                        <div class="table-responsive text-nowrap">
+                            <table class="table">
+                              <thead>
+                                <tr class="text-nowrap">
+                                  <th>#</th>
+                                  <th>Table heading</th>
+                                  <th>Table heading</th>
+                                  <th>Table heading</th>
+
+                                </tr>
+                              </thead>
+                              <tbody class="table-border-bottom-0">
+                                <tr>
+                                  <th scope="row">1</th>
+                                  <td>Table cell</td>
+                                  <td>Table cell</td>
+                                  <td>Table cell</td>
+
+                                </tr>
+                                <tr>
+                                  <th scope="row">2</th>
+                                  <td>Table cell</td>
+                                  <td>Table cell</td>
+                                  <td>Table cell</td>
+
+                                </tr>
+                                <tr>
+                                  <th scope="row">3</th>
+                                  <td>Table cell</td>
+                                  <td>Table cell</td>
+
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                    </div>
+                    <div class="tab-pane fade" id="navs-justified-messages" role="tabpanel">
+                      <p>
+                        Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi
+                        bears
+                        cake chocolate.
+                      </p>
+                      <p class="mb-0">
+                        Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing
+                        sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie
+                        jelly.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+
+       </div>
       </div>
     </div>
-    
-    
+
+
               </div>
 @endsection
 
@@ -393,7 +427,7 @@ $(document).ready(function() {
 
     // Remove the 'is-invalid' class from inputs/selects
     $(this).removeClass('is-invalid');
-    
+
     // Remove the error message from the UI
     $('div[data-field="' + fieldName + '"]').html('').removeClass('text-danger');
 });
