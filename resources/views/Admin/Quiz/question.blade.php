@@ -135,6 +135,8 @@
                         <div class="table-responsive text-nowrap">
                             <table class="table table-sm">
                               <thead>
+
+
                                 <tr>
                                   <th>Project</th>
                                   <th>Client</th>
