@@ -122,7 +122,7 @@
                     <div class="tab-pane fade show active" id="navs-justified-viewQue" role="tabpanel">
                         <div class="row">
                             <div class="col"><div class="form-floating form-floating-outline">
-                                <select class="form-select" id="mySelect2" aria-label="Floating label select example">
+                                <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
                                   <option>Open this select menu</option>
                                   <option value="1">One</option>
                                   <option value="2">Two</option>
