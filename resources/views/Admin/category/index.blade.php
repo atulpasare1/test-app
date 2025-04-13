@@ -100,7 +100,7 @@
                     <small class="text-muted"> {{$subtitle}}</small>
                 </div>
                 <div class="me-1">
-                    <a href="{{route('quiz.create')}}" class="btn btn-primary waves-effect waves-light text-white" ><i class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i><span class=" d-sm-inline-block"> Add {{$title}} </span></a>
+                    <a href="javascript:void(0);" class="btn btn-primary waves-effect waves-light text-white addcategpry" ><i class="ri-add-line me-0 me-sm-1 d-inline-block d-sm-none"></i><span class=" d-sm-inline-block"> Add {{$title}} </span></a>
 
                 </div>
               </div>
@@ -160,15 +160,43 @@
 
               </div>
 
-              <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEnd" aria-labelledby="offcanvasEndLabel">
+              <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCategory" aria-labelledby="offcanvasEndLabel">
                 <div class="offcanvas-header">
                   <h5 id="offcanvasEndLabel" class="offcanvas-title">Add {{$title}}</h5>
                   <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body my-auto mx-0 flex-grow-0">
-                  <p class="text-center">Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum for use in a type specimen book.</p>
-                  <button type="button" class="btn btn-primary mb-2 d-grid w-100 waves-effect waves-light">Continue</button>
-                  <button type="button" class="btn btn-outline-secondary d-grid w-100 waves-effect" data-bs-dismiss="offcanvas">Cancel</button>
+                <div class="offcanvas-body flex-grow-1">
+                    <form class="row g-3">
+                        <div class="col-12">
+                          <label for="inputName" class="form-label">Name</label>
+                          <input type="hidden" class="form-control" id="" placeholder="category name" name="category_id">
+                          <input type="text" class="form-control" id="inputName" placeholder="category name" name="name">
+                        </div>
+                        <div class="col-12">
+                          <label for="inputUsername" class="form-label">Description</label>
+                          <textarea class="form-control" placeholder="category description" name="description" id="inputdescription" cols="30" rows="10"></textarea>
+                        </div>
+                        <div class="col-12 d-flex justify-content-between">
+                            <div class="me-2">
+                                <h6 class="mb-0">Status</h6>
+                              </div>
+                              <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                  <input type="radio" name="status" value="1" class="btn-check raradio"  id="raradio1" checked="">
+                                  <label class="btn btn-outline-primary btn-sm waves-effect" for="raradio1">Active</label>
+
+                                  <input type="radio" name="status" value="0" class="btn-check raradio"  id="raradio2">
+                                  <label class="btn btn-outline-primary btn-sm waves-effect" for="raradio2">Disable</label>
+
+
+                              </div>
+                        </div>
+                        <div class="col-12 d-flex justify-content-end mt-5">
+                            <button type="button" class="btn btn-primary mb-2 mx-1  waves-effect waves-light">Continue</button>
+                            <button type="button" class="btn btn-outline-secondary mb-2  waves-effect waves-light" data-bs-dismiss="offcanvas">Continue</button>
+
+
+                        </div>
+                  </form>
                 </div>
               </div>
 
@@ -178,7 +206,64 @@
 @section('js')
 <script>
 
+const myOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCategory'));
+
+
+ function editCategory(...param) {
+    // Perform your edit logic here
+    myOffcanvas.show();
+    $('#offcanvasCategory').find('input[name="category_id"]').val(param[0]);
+    $('#offcanvasCategory').find('input[name="name"]').val(param[1]);
+    $('#offcanvasCategory').find('textarea[name="description"]').val(param[5]);
+    $('#offcanvasCategory').find('input[name="status"]')
+        .prop('checked', false)
+        .filter(`[value="${param[6]}"]`)
+        .prop('checked', true);
+
+
+    console.log('Edit button clicked for ID:', param[0]); // Assuming param[0] is the category
+    // id);
+ }
+
+ $('.addcategpry').on('click', function() {
+    myOffcanvas.show();
+    $('#offcanvasCategory').find('input[name="category_id"]').val('');
+    $('#offcanvasCategory').find('input[name="name"]').val('');
+    $('#offcanvasCategory').find('textarea[name="description"]').val('');
+    $('#offcanvasCategory').find('input[name="status"]')
+        .prop('checked', false)
+        .filter(`[value="1"]`)
+        .prop('checked', true);
+
+        $.ajax({
+            url: "{{ route('admin.category.create') }}",
+            type: "POST",
+            dataType: "json",
+            data: {
+                // Add any additional data you want to send to the server
+                name: $('#inputName').val(),
+                description: $('#inputDescription').val(),
+                status: $('input[name="status"]:checked').val()
+
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function() {
+                // Show a loading spinner or message if needed
+            },
+            success: function(data) {
+                console.log(data);
+                // Handle the response data as needed
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        })
+ });
+
     let tbl =   $('.categoryTbl').DataTable({
+
         "processing": true, // Show processing indicator while loading data
         "serverSide": true, // Enable server-side processing
         "ajax": {
@@ -186,7 +271,7 @@
           "type": "GET", // You can use GET or POST based on your backend setup
           "data": function(d) {
             // You can add additional parameters to be sent to the server, e.g. filters
-            console.log(d); // This will log the request params, like page number, search value, etc.
+           // console.log(d); // This will log the request params, like page number, search value, etc.
           }
         },
         columns: [

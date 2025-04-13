@@ -43,6 +43,13 @@ Route::middleware(['role:admin'])->group(function () {
     //ajax route
     Route::post('/quiz/get-lessions-by-subjects', [App\Http\Controllers\Admin\QuizController::class, 'get_lessions_by_subjects'])->name('get.lessions.by.subjects');
 
+
+    // Category routes
+    Route::get('/categories', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories');
+    Route::post('/categories/create', [App\Http\Controllers\Admin\CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories/{category_id}/update', [App\Http\Controllers\Admin\CategoryController::class, 'update'])->name('categories.update');
+    Route::post('/categories/{category_id}/delete', [App\Http\Controllers\Admin\CategoryController::class, 'destroy'])->name('categories.delete');
+
     Route::get('/openai', [App\Http\Controllers\OpenAIController::class, 'generate']);
 });
 

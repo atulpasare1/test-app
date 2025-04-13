@@ -48,10 +48,21 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
             'is_active' => 'required|boolean',
         ]);
+        $category= [
+            'name' => $request->name,
+            'code' => $request->code,
+            'slug' => Str::slug($request->name),
+            'short_description' => $request->description,
+            'description' => $request->description,
+            'is_active' => $request->is_active,
+        ];
 
-        Category::create($request->all());
+        Category::create(category);
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully!');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Category created successfully!',
+        ]);
     }
 
     // Show the form for editing the specified category
@@ -122,7 +133,9 @@ class CategoryController extends Controller
                 return [
                     'name' => $item->name,
                     'status' => $item->is_active ? 'Active' : 'Inactive',
-                    'actions' => "<button>Edit</button> <button>Delete</button>",
+                    'actions' => "<button class='btn btn-primary editcategory' onclick='editCategory(" . $item->id . ", \"" . $item->name . "\", \"" . $item->code . "\", \"" . $item->slug . "\", \"" . $item->short_description . "\", \"" . $item->description . "\", " . $item->is_active . ")'>Edit</button>
+                    <button class='btn btn-danger delete-category'
+                    data-id='" . $item->id . "'>Delete</button>",
                 ];
             }),
         ];
