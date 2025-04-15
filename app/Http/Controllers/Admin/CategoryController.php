@@ -32,9 +32,53 @@ class CategoryController extends Controller
     }
 
     // Show the form for creating a new category
-    public function create()
+    public function create(Request $request)
+
     {
-        return view('categories.create');
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'short_description' => 'nullable|string',
+                'description' => 'nullable|string',
+                'status' => 'required|boolean',
+            ]);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => $validator->errors()->first(),
+                ]);
+            }
+            if($request->category_id !== null)
+
+            {
+                $category = Category::find($request->category_id);
+                if ($category) {
+                    $category->update([
+                        'name' => $request->name,
+                        'code' => Str::random(10),
+                        'slug' => Str::slug($request->name),
+                        'short_description' => $request->description,
+                        'description' => $request->description,
+                        'is_active' => $request->status,
+                    ]);
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Category updated successfully!',
+                    ]);
+                }
+            }
+            $category = [
+                'name' => $request->name,
+                'code' => Str::random(10),
+                'slug' => Str::slug($request->name),
+                'short_description' => $request->description,
+                'description' => $request->description,
+                'is_active' => $request->status,
+            ];
+          Category::create($category);
+            return response()->json([
+                'status' => true,
+                'message' => 'Category created successfully!',
+            ]);
     }
 
     // Store a newly created category

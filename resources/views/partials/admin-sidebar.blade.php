@@ -33,11 +33,11 @@
         </a>
       </li>
       <li class="menu-item">
-        <a href="app-academy-course.html" class="menu-link">
+        <a href="{{route('categories')}}" class="menu-link">
           <div data-i18n="Exams category">Exams category</div>
         </a>
       </li>
-     
+
     </ul>
   </li>
   <!-- Manage Learning menu start -->
@@ -56,20 +56,20 @@
         <a href="javascript:void(0);" class="menu-link ">
           <div data-i18n="Lessions">Lessions</div>
         </a>
-        
+
       </li>
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link ">
           <div data-i18n="Videos">Videos</div>
         </a>
       </li>
-      
-    
+
+
     </ul>
   </li>
   <!-- e-commerce-app menu end -->
   <!-- Academy menu start -->
- 
+
   <!-- Academy menu end -->
 
   <li class="menu-header mt-5">
@@ -82,12 +82,12 @@
     </a>
     <ul class="menu-sub">
       <li class="menu-item">
-        <a href="app-logistics-dashboard.html" class="menu-link">
+        <a href="{{route('question')}}" class="menu-link">
           <div data-i18n="Questions"> Questions</div>
         </a>
       </li>
       <li class="menu-item">
-        <a href="app-logistics-fleet.html" class="menu-link">
+        <a href="" class="menu-link">
           <div data-i18n="Import Question">Import Question</div>
         </a>
       </li>
@@ -110,7 +110,7 @@
       <i class="menu-icon tf-icons ri-user-line"></i>
       <div data-i18n="Users">Users</div>
     </a>
-   
+
   </li>
 
 </ul>

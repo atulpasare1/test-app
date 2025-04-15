@@ -431,7 +431,7 @@
   background-clip: padding-box;
 }
 .ql-snow .ql-editor {
-  min-height: 15rem;
+  min-height: 5rem;
   background: #fff;
 }
 .ql-snow .ql-picker.ql-expanded .ql-picker-label {

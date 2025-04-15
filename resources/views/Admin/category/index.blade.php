@@ -166,11 +166,11 @@
                   <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body flex-grow-1">
-                    <form class="row g-3">
+                    <form id="frmcategory" class="row g-3">
                         <div class="col-12">
-                          <label for="inputName" class="form-label">Name</label>
+                          <label for="categoryName" class="form-label">Name</label>
                           <input type="hidden" class="form-control" id="" placeholder="category name" name="category_id">
-                          <input type="text" class="form-control" id="inputName" placeholder="category name" name="name">
+                          <input type="text" class="form-control" id="categoryName" placeholder="category name" name="name">
                         </div>
                         <div class="col-12">
                           <label for="inputUsername" class="form-label">Description</label>
@@ -191,7 +191,7 @@
                               </div>
                         </div>
                         <div class="col-12 d-flex justify-content-end mt-5">
-                            <button type="button" class="btn btn-primary mb-2 mx-1  waves-effect waves-light">Continue</button>
+                            <button type="submit" class="btn btn-primary mb-2 mx-1  waves-effect waves-light ">Submit</button>
                             <button type="button" class="btn btn-outline-secondary mb-2  waves-effect waves-light" data-bs-dismiss="offcanvas">Continue</button>
 
 
@@ -224,7 +224,6 @@ const myOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCa
     console.log('Edit button clicked for ID:', param[0]); // Assuming param[0] is the category
     // id);
  }
-
  $('.addcategpry').on('click', function() {
     myOffcanvas.show();
     $('#offcanvasCategory').find('input[name="category_id"]').val('');
@@ -235,32 +234,12 @@ const myOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCa
         .filter(`[value="1"]`)
         .prop('checked', true);
 
-        $.ajax({
-            url: "{{ route('admin.category.create') }}",
-            type: "POST",
-            dataType: "json",
-            data: {
-                // Add any additional data you want to send to the server
-                name: $('#inputName').val(),
-                description: $('#inputDescription').val(),
-                status: $('input[name="status"]:checked').val()
 
-            },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            beforeSend: function() {
-                // Show a loading spinner or message if needed
-            },
-            success: function(data) {
-                console.log(data);
-                // Handle the response data as needed
-            },
-            error: function(xhr, status, error) {
-                console.error("Error fetching data:", error);
-            }
-        })
  });
+
+
+
+
 
     let tbl =   $('.categoryTbl').DataTable({
 
@@ -286,6 +265,46 @@ const myOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasCa
         "info": true,
       });
 
+
+      $('#frmcategory').on('submit', function(e) {
+    e.preventDefault(); // Prevent the default form submission
+
+    $.ajax({
+            url: "{{ route('categories.create') }}",
+            type: "POST",
+            dataType: "json",
+            data: {
+                // Add any additional data you want to send to the server
+                name: $('input[name="name"]').val(),
+                description: $('#inputDescription').val(),
+                status: $('input[name="status"]:checked').val(),
+                category_id: $('input[name="category_id"]').val(),
+
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function() {
+                // Show a loading spinner or message if needed
+            },
+            success: function(data) {
+
+                // Handle the response data as needed
+                if(data.status){
+                    // Assuming the response contains a success message
+                    // You can also update the DataTable here if needed
+                    tbl.ajax.reload(); // Reload the DataTable to reflect changes
+                    myOffcanvas.hide();
+                    createToaster('success', data.message); // Hide the offcanvas after successful submission
+                } else {
+                    createToaster('error', data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching data:", error);
+            }
+        });
+    });
 
 </script>
 @endsection

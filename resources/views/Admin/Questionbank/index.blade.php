@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-            
-            
+
+
 
     <div class="row g-6 mb-6">
       <div class="col-sm-6 col-xl-3">
@@ -15,7 +15,7 @@
                 <div class="d-flex align-items-center">
                   <h4 class="mb-1 me-2">21,459</h4>
                 </div>
-               
+
               </div>
               <div class="avatar">
                 <div class="avatar-initial bg-label-primary rounded-3">
@@ -34,9 +34,9 @@
                 <p class="text-heading mb-1">Paid Users</p>
                 <div class="d-flex align-items-center">
                   <h4 class="mb-1 me-1">4,567</h4>
-                 
+
                 </div>
-                
+
               </div>
               <div class="avatar">
                 <div class="avatar-initial bg-label-danger rounded-3">
@@ -55,9 +55,9 @@
                 <p class="text-heading mb-1">Active Users</p>
                 <div class="d-flex align-items-center">
                   <h4 class="mb-1 me-1">19,860</h4>
-                  
+
                 </div>
-               
+
               </div>
               <div class="avatar">
                 <div class="avatar-initial bg-label-success rounded-3">
@@ -76,9 +76,9 @@
                 <p class="text-heading mb-1">Pending Users</p>
                 <div class="d-flex align-items-center">
                   <h4 class="mb-1 me-1">237</h4>
-                  
+
                 </div>
-               
+
               </div>
               <div class="avatar">
                 <div class="avatar-initial bg-label-warning rounded-3">
@@ -89,7 +89,7 @@
           </div>
         </div>
       </div>
-    
+
     </div>
     <!-- {{$title}}  List Table -->
     <div class="card">
@@ -104,11 +104,11 @@
 
                 </div>
               </div>
-          
-           
+
+
            <div class="d-flex justify-content-between align-items-center row gx-5 pt-4 gap-5 gap-md-0">
               <div class="col-md-4 user_role">
-                 <select id="UserRole" class="form-select  text-capitalize">
+                 <select id="UserRole" class="form-select form-select-sm  text-capitalize">
                     <option value=""> Select Role </option>
                     <option value="Admin">Admin</option>
                     <option value="Author">Author</option>
@@ -118,7 +118,7 @@
                  </select>
               </div>
               <div class="col-md-4 user_plan">
-                 <select id="UserPlan" class="form-select text-capitalize">
+                 <select id="UserPlan" class="form-select form-select-sm text-capitalize">
                     <option value=""> Select Plan </option>
                     <option value="Basic">Basic</option>
                     <option value="Company">Company</option>
@@ -127,7 +127,7 @@
                  </select>
               </div>
               <div class="col-md-4 user_status">
-                 <select id="FilterTransaction" class="form-select text-capitalize">
+                 <select id="FilterTransaction" class="form-select form-select-sm text-capitalize">
                     <option value=""> Select Status </option>
                     <option value="Pending" class="text-capitalize">Pending</option>
                     <option value="Active" class="text-capitalize">Active</option>
@@ -138,19 +138,24 @@
         </div>
         <div class="card-datatable">
             <div class="table-responsive text-nowrap">
-                <table class="table table-sm">
+                <table class="table table-sm QuestionTbl">
                   <thead>
                     <tr>
-                      <th>Title</th>
-                      <th>Class</th>
-                      <th>Subject</th>
-                      <th>Lession</th>
+                      <th>Code</th>
+                      <th>Question</th>
+                      <th>Type</th>
+                      <th>Section</th>
+                      <th>Skill</th>
+                      <th>Topic</th>
                       <th>Status</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0">
                     <tr>
+
+                      <td><i class="ri-suitcase-2-line ri-22px text-danger me-4"></i><span class="fw-medium">Tours Project</span></td>
+                      <td><i class="ri-suitcase-2-line ri-22px text-danger me-4"></i><span class="fw-medium">Tours Project</span></td>
                       <td><i class="ri-suitcase-2-line ri-22px text-danger me-4"></i><span class="fw-medium">Tours Project</span></td>
                       <td>Albert Cook</td>
                       <td>
@@ -178,14 +183,56 @@
                         </div>
                       </td>
                     </tr>
-                   
+
                   </tbody>
                 </table>
               </div>
         </div>
         <!-- Offcanvas to add new user -->
      </div>
-    
-    
+
+
               </div>
+
+
+
+
+@endsection
+
+@section('js')
+<script>
+     let tbl =   $('.QuestionTbl').DataTable({
+        "processing": true, // Show processing indicator while loading data
+        "serverSide": true, // Enable server-side processing
+        "autoWidth": false,
+        "columnDefs": [
+        { "width": "150px", "targets": 0 },
+        { "width": "200px", "targets": 1 }
+    ],
+        "ajax": {
+          "url": "{{ url()->current() }}", // Change this to your backend URL
+          "type": "GET", // You can use GET or POST based on your backend setup
+          "data": function(d) {
+            // You can add additional parameters to be sent to the server, e.g. filters
+            console.log(d); // This will log the request params, like page number, search value, etc.
+          }
+        },
+        columns: [
+                { data: 'code' },
+                { data: 'question',width:'300px' },
+                { data: 'type' },
+                { data: 'subject' },
+                { data: 'skill' },
+                { data: 'topic' },
+                { data: 'status' },
+                { data: 'actions', orderable: false, searchable: false }
+            ],
+        "lengthMenu": [10, 25, 50, 100], // Page length options
+        "paging": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+      });
+
+</script>
 @endsection
