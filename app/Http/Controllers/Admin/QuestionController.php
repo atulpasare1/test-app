@@ -50,7 +50,7 @@ class QuestionController extends Controller
         // Validation rules
         $validator = Validator::make($request->all(), [
             'question' => 'required|string',
-            'option' => 'required|array',
+            'options' => 'required|array',
             'option.*' => 'required|string',
         ]);
 
@@ -65,16 +65,22 @@ class QuestionController extends Controller
         // Create the new quiz entry in the database
         $request->answer = $request->answer ?? null; // Set answer to null if not provided
         $request->option = $request->option ?? []; // Set option to empty array if not provided
-       $qz_id=  DB::table('question')->insertGetId([
+       $qz_id=  DB::table('questions')->insertGetId([
             'question'=> $request->question,
-            'option'=> $request->option->map(function ($option) {
-                return [
-                    'option' => $option['option'],
-                    'is_answer' => $option['is_answer'] ?? false, // Default to false if not provided
-                    'partial_weightage'=> 0 // Default to false
-                ];
-            }),
+            'options' => collect($request->option)->map(function ($option, $key) use ($request) {
+    if (isset($option['isAnswer']) && $option['isAnswer'] == true) {
+        $request->answer = $key;
+    }
+
+    return [
+        'option' => $option['content'],
+        'is_answer' => $option['isAnswer'] ?? false,
+        'partial_weightage' => 0
+    ];
+})->toJson(),
             'correct_answer'=> $request->answer,
+            'question_type_id'=> 1,
+            'skill_id'=> 1,
             'code'=> 'que'.Str::random(11),
             'updated_at' => now(),
         ]);
