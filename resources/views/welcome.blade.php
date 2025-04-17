@@ -48,7 +48,6 @@
             </style>
 
     </head>
-    <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
 
 
         <body class="bg-white">
@@ -68,7 +67,7 @@
 
                     <div class="flex items-center space-x-4">
                     @if (Route::has('login'))
-                        @auth
+                     @auth
 
                         <a href="{{ url('/dashboard') }}"
                             class="hidden md:block bg-white text-primary border border-primary px-4 py-2 rounded-button hover:bg-gray-50 transition cursor-pointer">Sign In</button>
