@@ -67,14 +67,13 @@
                     </div>
 
                     <div class="flex items-center space-x-4">
-                        @if (Route::has('login'))
+                    @if (Route::has('login'))
                         @auth
 
-                        <a
-                            href="{{ url('/dashboard') }}"
+                        <a href="{{ url('/dashboard') }}"
                             class="hidden md:block bg-white text-primary border border-primary px-4 py-2 rounded-button hover:bg-gray-50 transition cursor-pointer">Sign In</button>
 "
-                        >
+
                             Dashboard
                         </a>
                     @else
@@ -84,7 +83,7 @@
                         <button class="hidden md:block bg-primary text-white px-4 py-2 rounded-button hover:bg-opacity-90 transition cursor-pointer">Register</button>
                         @endif
                     @endauth
-
+                        @endif
 
                         <div class="md:hidden w-8 h-8 flex items-center justify-center cursor-pointer" id="mobile-menu-button">
                             <i class="ri-menu-line ri-lg"></i>
