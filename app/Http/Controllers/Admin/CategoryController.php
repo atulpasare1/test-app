@@ -55,7 +55,7 @@ class CategoryController extends Controller
                     $category->update([
                         'name' => $request->name,
                         'code' => Str::random(10),
-                        'slug' => Str::slug($request->name),
+                        'slug' => Str::slug($request->name).Str::random(10),
                         'short_description' => $request->description,
                         'description' => $request->description,
                         'is_active' => $request->status,
@@ -146,44 +146,52 @@ class CategoryController extends Controller
 
     public function getCategoriesData($request)
     {
-        // Get the request parameters for DataTable
         $draw = $request->input('draw');
         $start = $request->input('start');
         $length = $request->input('length');
+        $search = $request->input('search.value');
 
-        // You can add filtering and sorting logic here as needed
-        $query =  DB::table('categories');
+        // Total records without filtering
+        $totalRecords = DB::table('categories')->count();
 
-        // Optionally, apply any filters or search query if required
-        if ($search = $request->input('search.value')) {
-            $query->where('name', 'like', '%' . $search . '%')
+        // Base query
+        $query = DB::table('categories');
+
+        // Apply filters if search is provided
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
                   ->orWhere('short_description', 'like', '%' . $search . '%');
+            });
         }
 
-        // Total records count (without filters)
-        $totalRecords = $query->count();
+        // Count after filtering (before pagination)
+        $filteredRecords = $query->count();
 
-        // Apply pagination (limit and offset)
+        // Apply pagination
         $data = $query->offset($start)
                       ->limit($length)
                       ->get();
 
-        // Prepare the data response in the DataTable format
+        // Prepare response
         $response = [
-            "draw" => $draw,
+            "draw" => intval($draw),
             "recordsTotal" => $totalRecords,
-            "recordsFiltered" => $data->count(), // You can adjust this if you have complex filtering logic
+            "recordsFiltered" => $filteredRecords,
             "data" => $data->map(function ($item) {
                 return [
                     'name' => $item->name,
                     'status' => $item->is_active ? 'Active' : 'Inactive',
-                    'actions' => "<button class='btn btn-primary editcategory' onclick='editCategory(" . $item->id . ", \"" . $item->name . "\", \"" . $item->code . "\", \"" . $item->slug . "\", \"" . $item->short_description . "\", \"" . $item->description . "\", " . $item->is_active . ")'>Edit</button>
-                    <button class='btn btn-danger delete-category'
-                    data-id='" . $item->id . "'>Delete</button>",
+                    'actions' => "<button class='btn btn-primary editcategory'
+                                    onclick='editCategory(" . $item->id . ", \"" . $item->name . "\", \"" . $item->code . "\", \"" . $item->slug . "\", \"" . $item->short_description . "\", \"" . $item->description . "\", " . $item->is_active . ")'>
+                                    Edit
+                                  </button>
+                                  <button class='btn btn-danger delete-category' data-id='" . $item->id . "'>Delete</button>",
                 ];
             }),
         ];
 
         return response()->json($response);
     }
+
 }

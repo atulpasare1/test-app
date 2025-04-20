@@ -35,6 +35,39 @@ class QuestionController extends Controller
         ]);
     }
 
+
+
+
+    public function importquestion(Request $request)
+    {
+        return view('Admin.Questionbank.import-questions',[
+            "title"=>'Import Questions',
+            "subtitle"=>'You can import questions from here',
+
+        ]);
+    }
+    public function submitimport(Request $request)
+{
+    $request->validate([
+        'file' => 'required|mimes:xlsx,xls',
+        'subject_id' => 'required|integer',
+        'lession_id' => 'required|integer',
+        'topic_id' => 'required|integer',
+    ]);
+
+    Session::forget('imported_count'); // Reset previous count
+
+    $import = new QuestionsImport($request->subject_id, $request->lession_id, $request->topic_id);
+    Excel::import($import, $request->file('file'));
+
+    $importedCount = Session::get('imported_count', 0);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Questions imported successfully.',
+        'imported_count' => $importedCount
+    ]);
+}
     public function create(Request $req)
     {
         return view('Admin.Questionbank.create',[
@@ -45,13 +78,13 @@ class QuestionController extends Controller
             'subtitle'=>'You can manage Quiz From here',
         ]);
     }
+
     public function store(Request $request)
     {
-        // Validation rules
         $validator = Validator::make($request->all(), [
             'question' => 'required|string',
             'options' => 'required|array',
-            'option.*' => 'required|string',
+            'options.*.content' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -59,39 +92,48 @@ class QuestionController extends Controller
                 'success' => false,
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
-            ],200);
+            ], 200);
         }
 
-        // Create the new quiz entry in the database
-        $request->answer = $request->answer ?? null; // Set answer to null if not provided
-        $request->option = $request->option ?? []; // Set option to empty array if not provided
-       $qz_id=  DB::table('questions')->insertGetId([
-            'question'=> $request->question,
-            'options' => collect($request->option)->map(function ($option, $key) use ($request) {
-    if (isset($option['isAnswer']) && $option['isAnswer'] == true) {
-        $request->answer = $key;
-    }
+        // Process options and determine the correct answer
+        $answerIndex = null;
+        $options = collect($request->options)->map(function ($option, $index) use (&$answerIndex) {
+            if (isset($option['isAnswer']) && $option['isAnswer'] == true) {
+                $answerIndex = $index;
+            }
 
-    return [
-        'option' => $option['content'],
-        'is_answer' => $option['isAnswer'] ?? false,
-        'partial_weightage' => 0
-    ];
-})->toJson(),
-            'correct_answer'=> $request->answer,
-            'question_type_id'=> 1,
-            'skill_id'=> 1,
-            'code'=> 'que'.Str::random(11),
+            return [
+                'option' => $option['content'],
+                'is_answer' => $option['isAnswer'] ?? false,
+                'partial_weightage' => 0,
+            ];
+        });
+
+        if ($answerIndex === null) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Correct answer not provided.',
+            ], 200);
+        }
+
+        // Insert the question
+        $que_id = DB::table('questions')->insertGetId([
+            'question' => $request->question,
+            'options' => $options->toJson(),
+            'correct_answer' => $answerIndex,
+            'question_type_id' => 1,
+            'skill_id' => 1,
+            'code' => 'que' . Str::random(11),
             'updated_at' => now(),
         ]);
 
-        // Respond with success message
         return response()->json([
             'success' => true,
-            'message' => 'Quiz created successfully!',
-            'redirect_url' => route('quiz.edit',['quiz_id'=>$qz_id]),  // Redirect to quizzes list page or wherever you want
+            'message' => 'Question created successfully!',
+            'redirect_url' => route('question.edit', ['que_id' => $que_id]),
         ]);
     }
+
 
 
     public function getQuesData($request)
@@ -100,42 +142,63 @@ class QuestionController extends Controller
         $draw = $request->input('draw');
         $start = $request->input('start');
         $length = $request->input('length');
+        $search = $request->input('search.value');
 
-        // You can add filtering and sorting logic here as needed
-        $query =  DB::table('questions');
+        // Total records count (without filters)
+        $totalRecords = DB::table('questions')->count();
 
-        // Optionally, apply any filters or search query if required
-        if ($search = $request->input('search.value')) {
+        // Base query
+        $query = DB::table('questions');
+
+        // Apply filtering if there's a search value
+        if (!empty($search)) {
             $query->where('code', 'like', '%' . $search . '%');
         }
 
-        // Total records count (without filters)
-        $totalRecords = $query->count();
-        // Apply pagination (limit and offset)
+        // Count after filtering
+        $filteredRecords = $query->count();
+
+        // Apply pagination
         $data = $query->offset($start)
                       ->limit($length)
                       ->get();
 
-        // Prepare the data response in the DataTable format
+        // Prepare the response
         $response = [
-            "draw" => $draw,
+            "draw" => intval($draw),
             "recordsTotal" => $totalRecords,
-            "recordsFiltered" => $data->count(), // You can adjust this if you have complex filtering logic
+            "recordsFiltered" => $filteredRecords,
             "data" => $data->map(function ($item) {
                 return [
-                    'code' => '<small>'.$item->code.'</small>',
-                    'question' => '<small>'.Str::substr($item->question, 0,100).'</small>',
+                    'code' => '<small>' . $item->code . '</small>',
+                    'question' => '<small>' . Str::substr($item->question, 0, 100) . '</small>',
                     'subject' => $item->topic_id,
                     'type' => $item->topic_id,
                     'skill' => $item->topic_id,
                     'topic' => $item->topic_id,
                     'is_active' => $item->topic_id,
-                    'status' => $item->is_active ? '<span class="badge rounded-pill bg-label-success me-1">Active</span>' : '<span class="badge rounded-pill bg-label-danger me-1">Inactive</span>',
-                    'actions' => "<a href='".route('quiz.edit',['quiz_id'=>$item->id])."'><i class='ri-edit-box-line me-2'></i></button> <button>Delete</button>",
+                    'status' => $item->is_active
+                        ? '<span class="badge rounded-pill bg-label-success me-1">Active</span>'
+                        : '<span class="badge rounded-pill bg-label-danger me-1">Inactive</span>',
+                    'actions' => "<a href='" . route('quiz.edit', ['quiz_id' => $item->id]) . "'>
+                                    <i class='ri-edit-box-line me-2'></i></a>
+                                  <button>Delete</button>",
                 ];
             }),
         ];
 
         return response()->json($response);
+    }
+
+
+    public function question_edit(Request $request,$que_id)
+    {
+        $Question = DB::table('questions')->where('id',$que_id)->first();
+        return view('Admin.Questionbank.edit',[
+            'title'=>'Update Question',
+            'subtitle'=>'You can manage Question From here',
+            'que'=>$Question
+        ]);
+
     }
 }

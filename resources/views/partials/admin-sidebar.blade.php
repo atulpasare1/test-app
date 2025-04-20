@@ -87,7 +87,7 @@
         </a>
       </li>
       <li class="menu-item">
-        <a href="" class="menu-link">
+        <a href="{{route('question.import')}}" class="menu-link">
           <div data-i18n="Import Question">Import Question</div>
         </a>
       </li>

@@ -31,10 +31,12 @@ Route::middleware(['role:admin'])->group(function () {
     Route::get('/question', [App\Http\Controllers\Admin\QuestionController::class, 'index'])->name('question');
     Route::get('/question/create', [App\Http\Controllers\Admin\QuestionController::class, 'create'])->name('question.create');
     Route::get('/question/search', [App\Http\Controllers\Admin\QuestionController::class, 'search'])->name('question.search');
-     Route::get('/question/{question_id}/edit', [App\Http\Controllers\Admin\QuestionController::class, 'question_edit'])->name('question.edit');
-     Route::get('/question/{question_id}/settings', [App\Http\Controllers\Admin\QuestionController::class, 'question_settings'])->name('question.settings');
-     Route::get('/question/{question_id}/questions', [App\Http\Controllers\Admin\QuestionController::class, 'question_questions'])->name('question.questions');
-     Route::get('/question/{question_id}/schedules', [App\Http\Controllers\Admin\QuestionController::class, 'question_schedules'])->name('question.schedules');
+    Route::get('/question/import', [App\Http\Controllers\Admin\QuestionController::class, 'importquestion'])->name('question.import');
+     Route::get('/question/{que_id}/edit', [App\Http\Controllers\Admin\QuestionController::class, 'question_edit'])->name('question.edit');
+     Route::get('/question/{que_id}/edit/submit', [App\Http\Controllers\Admin\QuestionController::class, 'question_edit_submit'])->name('question.edit.submit');
+     Route::get('/question/{que_id}/settings', [App\Http\Controllers\Admin\QuestionController::class, 'question_settings'])->name('question.settings');
+     Route::get('/question/{que_id}/questions', [App\Http\Controllers\Admin\QuestionController::class, 'question_questions'])->name('question.questions');
+     Route::get('/question/{que_id}/schedules', [App\Http\Controllers\Admin\QuestionController::class, 'question_schedules'])->name('question.schedules');
      Route::post('/question/submit', [App\Http\Controllers\Admin\QuestionController::class, 'store'])->name('question.store');
 
 

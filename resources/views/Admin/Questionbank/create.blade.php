@@ -39,7 +39,7 @@
         <div class="card-header border-bottom">
             <div class="d-flex justify-content-between">
                 <div class="me-1">
-                    <h5 class="card-title mb-0">Create Quiz</h5>
+                    <h5 class="card-title mb-0">Create {{ $title }}</h5>
                     <small class="text-muted"> You can manage Quiz From here</small>
                 </div>
             </div>
@@ -138,12 +138,12 @@
 
               </div>
 
-              <button type="button" class="btn btn-label-primary waves-effect" id="add-more-btn"><i class="ri-plus-line"></i>Add More Options</button>
+              <button type="button" class="btn btn-outline-success waves-effect" id="add-more-btn"><i class="ri-plus-line"></i>Add More Options</button>
           </div>
 
           <div class="mb-8 float-end">
-            <a href="{{ route('quiz') }}" class="btn btn-outline-primary waves-effect">Cancel</a>
-            <button type="submit" class="btn btn-primary waves-effect waves-light" id="submit-btn">Submit Quiz</button>
+            <a href="{{ route('question') }}" class="btn btn-outline-primary waves-effect">Cancel</a>
+            <button type="submit" class="btn btn-primary waves-effect waves-light" id="submit-btn">Submit {{$title}}</button>
           </div>
         </form>
       </div>
@@ -278,20 +278,25 @@ const addOptionEditor = () => {
   const containerId = `option-container-${index}`;
 
   const optionEditorContainer = document.createElement('div');
-  optionEditorContainer.classList.add('card', 'mb-3', 'p-3');
-  optionEditorContainer.id = containerId;
+optionEditorContainer.classList.add('card', 'mb-3', 'p-3');
+optionEditorContainer.id = containerId;
 
-  optionEditorContainer.innerHTML = `
-    <div class="d-flex justify-content-between align-items-center mb-2">
-      <div>
-        <label class="form-label mb-0">Option ${index + 1}</label>
-        <input type="radio" name="is_answer" value="${index}" id="${radioId}" style="margin-left: 10px;">
+optionEditorContainer.innerHTML = `
+  <div class="row mb-2 align-items-center">
+    <div class="col-12 col-md-8 mb-2 mb-md-0">
+      <label class="form-label mb-1">Option ${index + 1}</label>
+      <div class="form-check d-inline-block ms-2">
+        <input type="radio" name="is_answer" value="${index}" id="${radioId}" class="form-check-input">
         <label for="${radioId}" class="form-check-label">Correct Answer</label>
       </div>
-      <button type="button" class="btn btn-sm btn-danger" onclick="removeOption(${index})">Remove</button>
     </div>
-    <div id="${optionEditorId}" class="quill-editor"></div>
-  `;
+    <div class="col-12 col-md-4 text-md-end">
+      <button type="button" class="btn btn-sm btn-danger waves-effect" onclick="removeOption(${index})">Remove</button>
+    </div>
+  </div>
+  <div id="${optionEditorId}" class="quill-editor"></div>
+`;
+
 
   document.getElementById('options-container').appendChild(optionEditorContainer);
 
@@ -390,6 +395,7 @@ document.getElementById('quiz-form').addEventListener('submit', (event) => {
  // Send data to your backend (Example with Fetch)
  fetch('/question/submit', {
      method: 'POST',
+
      headers: {
          'Content-Type': 'application/json',
          'X-CSRF-TOKEN': '{{ csrf_token() }}'  // Include CSRF token
@@ -400,6 +406,8 @@ document.getElementById('quiz-form').addEventListener('submit', (event) => {
  .then(data => {
      // Handle the response
      console.log('Quiz submitted successfully:', data);
+        createToaster('success', 'Quiz submitted successfully.');
+        window.location.href = data.redirect_url;
  })
  .catch(error => {
      console.error('Error submitting quiz:', error);
